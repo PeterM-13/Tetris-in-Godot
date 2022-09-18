@@ -1,10 +1,10 @@
 [gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Main.gd" type="Script" id=1]
-[ext_resource path="res://square_font.ttf" type="DynamicFontData" id=3]
-[ext_resource path="res://play.png" type="Texture" id=4]
-[ext_resource path="res://pause.png" type="Texture" id=5]
-[ext_resource path="res://retry.png" type="Texture" id=6]
+[ext_resource path="res://images/retry.png" type="Texture" id=2]
+[ext_resource path="res://fonts/square_font.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://images/pause.png" type="Texture" id=4]
+[ext_resource path="res://images/play.png" type="Texture" id=5]
 
 [sub_resource type="DynamicFont" id=1]
 size = 100
@@ -35,8 +35,8 @@ margin_right = 1722.0
 margin_bottom = 239.0
 rect_scale = Vector2( 0.25, 0.25 )
 toggle_mode = true
-texture_normal = ExtResource( 5 )
-texture_pressed = ExtResource( 4 )
+texture_normal = ExtResource( 4 )
+texture_pressed = ExtResource( 5 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -48,7 +48,7 @@ margin_top = 90.0
 margin_right = 1080.0
 margin_bottom = 290.0
 rect_scale = Vector2( 0.5, 0.45 )
-texture_normal = ExtResource( 6 )
+texture_normal = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }

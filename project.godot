@@ -12,7 +12,8 @@ config_version=4
 
 config/name="Tetris"
 run/main_scene="res://Main.tscn"
-config/icon="res://icon.png"
+boot_splash/image="res://images/logo.png"
+config/icon="res://images/logo.png"
 
 [display]
 
@@ -22,6 +23,7 @@ window/size/test_width=540
 window/size/test_height=990
 window/handheld/orientation="portrait"
 window/stretch/mode="viewport"
+window/stretch/aspect="keep"
 
 [input]
 
