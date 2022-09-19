@@ -19,5 +19,5 @@ func _process(_delta):
 	if not color_changed:
 		color_changed = true
 		modulate = get_parent().colour
-		if name == "square1":
-			modulate = get_parent().colour * 0.9
+		#if name == "square1":
+		#	modulate = get_parent().colour * 0.9

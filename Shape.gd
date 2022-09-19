@@ -1,6 +1,7 @@
 extends KinematicBody2D
 
 var frame_count = 0
+var frame_count2 = 0
 var frame_speed = 60
 
 var square_size = 90
@@ -52,21 +53,28 @@ func _ready():
 var next = false
 func _physics_process(_delta):
 	frame_count += 1
+	frame_count2 += 1
 	if frame_count >= frame_speed and active_d:
 		position.y += square_size
 		frame_count = 0
 	if not active_d and not next:
 		get_parent().next()
 		next = true
+		
+	if frame_count2 >= 7 and active_d:
+		frame_count2 = 0
+		if Input.get_action_strength("left") == 1 and (position.x-space_left) > square_size and active_l:
+			position.x -= square_size
+		elif Input.get_action_strength("right") == 1 and (position.x+space_right) < dimensions.x - square_size and active_r:
+			position.x += square_size
 
 	
 	
 func _process(_delta):
 	if active_d:
-		if Input.is_action_just_pressed("left") and (position.x-space_left) > square_size and active_l:
-			position.x -= square_size
-		elif Input.is_action_just_pressed("right") and (position.x+space_right) < dimensions.x - square_size and active_r:
-			position.x += square_size
+	#	if Input.get_action_strength("left") == 1 and (position.x-space_left) > square_size and active_l:
+	#		position.x -= square_size
+		
 			
 		if Input.is_action_just_pressed("rotate"):
 			rotation_degrees += 90
@@ -76,13 +84,11 @@ func _process(_delta):
 			space_right = space_up
 			space_up = temp
 			
-			
 		if Input.get_action_strength("fast") == 1:
-			frame_speed = 3
+			frame_speed = 2
 		else:
 			frame_speed = 60
 			
-		
 		var childeren = get_parent().get_children()
 		childeren.remove(0)
 		childeren.remove(0)
@@ -102,6 +108,12 @@ func _process(_delta):
 							active_r = false
 						else:
 							active_r = true
+							
+		for sq in get_children():
+			if sq.global_position.x > dimensions.x - square_size:
+				position.x -= square_size
+			elif sq.global_position.x < square_size:
+				position.x += square_size
 						
 	if get_child_count() <= 1:
 		queue_free()

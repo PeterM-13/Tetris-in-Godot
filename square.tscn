@@ -14,4 +14,5 @@ shape = SubResource( 1 )
 one_way_collision_margin = 128.0
 
 [node name="square" type="Sprite" parent="."]
+scale = Vector2( 0.95, 0.95 )
 texture = ExtResource( 1 )

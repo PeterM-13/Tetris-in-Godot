@@ -15,7 +15,6 @@ visible = false
 shape = SubResource( 1 )
 
 [node name="square1" parent="." instance=ExtResource( 1 )]
-modulate = Color( 1, 0.513726, 0, 1 )
 
 [node name="square2" parent="." instance=ExtResource( 1 )]
 

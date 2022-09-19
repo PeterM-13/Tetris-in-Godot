@@ -33,7 +33,7 @@ func _draw():
 
 var shape_scene = preload("res://Shape.tscn")
 func next():
-	$score.text = str(int($score.text) + 1)
+	$score.text = str(int($score.text) + 5)
 	var line_count = []
 	for _i in range(0, square_amount_y):
 		line_count.append(0)
@@ -76,8 +76,20 @@ func next():
 						if square_amount_y - ((Square.global_position.y - (0.5*square_size)) / square_size) >= line_num[l]:
 							count += 1
 					Square.global_position.y += (square_size * count)
-							
-		$score.text = str(int($score.text) + len(line_num))
+
+		var nl = len(line_num)
+		if nl == 1:
+			$score.text = str(int($score.text) + 10)
+		elif nl == 2:
+			$score.text = str(int($score.text) + 20)
+		elif nl == 3:
+			$score.text = str(int($score.text) + 40)
+		elif nl == 4:
+			$score.text = str(int($score.text) + 80)
+		elif nl == 5:
+			$score.text = str(int($score.text) + 160)
+		elif nl >= 6:
+			$score.text = str(int($score.text) + 300)
 			
 		var new_shape = shape_scene.instance()
 		self.add_child(new_shape)
