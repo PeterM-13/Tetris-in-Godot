@@ -23,7 +23,6 @@ var space_up
 var colour
 
 func _ready():
-	#colour = colours[rand_range(0,len(colours)-1)]
 	square_amount_x = get_parent().square_amount_x
 	square_amount_y = get_parent().square_amount_y
 	dimensions = get_viewport().size
@@ -32,7 +31,11 @@ func _ready():
 	rng.randomize()
 	position.x = ( dimensions.x / 2 )
 	var random = rng.randi_range(0,6)
-	colour = get_parent().colours[random]
+	if get_parent().difficulty > 0:
+		rng.randomize()
+		colour = get_parent().colours[rng.randi_range(0,6)]
+	else:
+		colour = get_parent().colours[random]
 	if random == 0:
 		L(false)
 	elif random == 1:
@@ -74,7 +77,6 @@ func _process(_delta):
 	if active_d:
 	#	if Input.get_action_strength("left") == 1 and (position.x-space_left) > square_size and active_l:
 	#		position.x -= square_size
-		
 			
 		if Input.is_action_just_pressed("rotate"):
 			rotation_degrees += 90
@@ -85,11 +87,16 @@ func _process(_delta):
 			space_up = temp
 			
 		if Input.get_action_strength("fast") == 1:
-			frame_speed = 2
+			frame_speed = 3
 		else:
 			frame_speed = 60
-			
+		
+		var new_frame = true
+		#active_l = false
+		#active_r = false
 		var childeren = get_parent().get_children()
+		childeren.remove(0)
+		childeren.remove(0)
 		childeren.remove(0)
 		childeren.remove(0)
 		childeren.remove(0)
@@ -98,15 +105,17 @@ func _process(_delta):
 				for square in range(1,shape.get_child_count()):
 					var Square = shape.get_child(square)
 					for s in range(1,get_child_count()):
-						if Square.global_position.x == get_child(s).global_position.x and Square.global_position.y <= get_child(s).global_position.y+square_size:
+						if Square.global_position.x == get_child(s).global_position.x and Square.global_position.y <= get_child(s).global_position.y+square_size and Square.global_position.y > get_child(s).global_position.y:
 							active_d = false
-						if Square.global_position.y == get_child(s).global_position.y and Square.global_position.x == get_child(s).global_position.x-square_size:
+						if Square.global_position.y == get_child(s).global_position.y and Square.global_position.x <= get_child(s).global_position.x-square_size:
 							active_l = false
-						else:
+							new_frame = false
+						elif new_frame:
 							active_l = true
-						if Square.global_position.y == get_child(s).global_position.y and Square.global_position.x == get_child(s).global_position.x+square_size:
+						if Square.global_position.y == get_child(s).global_position.y and Square.global_position.x <= get_child(s).global_position.x+square_size:
 							active_r = false
-						else:
+							new_frame = false
+						elif new_frame:
 							active_r = true
 							
 		for sq in get_children():
@@ -144,7 +153,6 @@ func I():
 func T():
 	position.x += 0.5*square_size
 	position.y += 2.5*square_size
-	#rotation_degrees += 90
 	$square2.position.x += square_size_scaled 
 	$square3.position.x -= square_size_scaled 
 	$square4.position.y += square_size_scaled 
@@ -174,7 +182,6 @@ func Z(flip):
 	$square2.position.y -= square_size_scaled
 	$square3.position.x += square_size_scaled
 	$square4.position += Vector2(square_size_scaled, square_size_scaled)
-	#print(scale.x)
 	if flip:
 		space_left = 1.5*square_size
 		space_right = 0.5*square_size

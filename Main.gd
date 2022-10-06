@@ -8,6 +8,8 @@ var square_size = 90
 var dimensions
 var dead = false
 
+var difficulty = 0
+
 func _ready():
 	dimensions = get_viewport().size
 	randomize()
@@ -29,53 +31,67 @@ func _draw():
 	for sqaure in range(1,(square_amount_y+2)):
 		y = sqaure * square_size
 		draw_line(Vector2(0,y), Vector2(x, y), Color(0,0,0), 2)
+	
+	#red line
+	draw_line(Vector2(0,square_size*3), Vector2(dimensions.x, square_size*3), Color(0.5, 0, 0), 3)
+		
+		
 
 
 var shape_scene = preload("res://Shape.tscn")
+var line_count = []
 func next():
 	$score.text = str(int($score.text) + 5)
-	var line_count = []
+	line_count = []
 	for _i in range(0, square_amount_y):
 		line_count.append(0)
 	var childeren = get_children()
 	childeren.remove(0)
 	childeren.remove(0)
 	childeren.remove(0)
+	childeren.remove(0)
+	childeren.remove(0)
 	for shape in childeren:
-		for square in range(1,shape.get_child_count()):
-			var Square = shape.get_child(square)
-			#for s in range(1,5):
-			line_count[(square_amount_y) - ((Square.global_position.y - (0.5*square_size)) / square_size)] += 1
-			
-	if line_count[(square_amount_y-3)-1] != 0:
+		if shape.name != "Platform":
+			for square in range(1,shape.get_child_count()):
+				var Square = shape.get_child(square)
+				#for s in range(1,5):
+				line_count[(square_amount_y) - ((Square.global_position.y - (0.5*square_size)) / square_size)] += 1
+				
+	if line_count[(square_amount_y-2)-1] != 0:
 		dead = true
+		#$retry.shortcut.shortcut.action = "fast"
 		get_tree().paused = true
 		$play.pressed = true
-	#	print("Dead!")
-				
+
 	if not dead:
 		var line_num = []
 		for l in range(0,len(line_count)-1):
 			if line_count[l] >= square_amount_x:
 				line_num.append(l)
 				for shape in childeren:
-					for square in range(1,shape.get_child_count()):
-						var Square = shape.get_child(square)
-						if square_amount_y - ((Square.global_position.y - (0.5*square_size)) / square_size) == l:
-							Square.queue_free()
+					if shape.name != "Platfrom":
+						for square in range(1,shape.get_child_count()):
+							var Square = shape.get_child(square)
+							if square_amount_y - ((Square.global_position.y - (0.5*square_size)) / square_size) == l:
+								Square.queue_free()
 		childeren = get_children()
 		childeren.remove(0)
 		childeren.remove(0)
 		childeren.remove(0)
+		childeren.remove(0)
+		childeren.remove(0)
+
 		if line_num:
 			for shape in childeren:
-				for square in range(1,shape.get_child_count()):
-					var Square = shape.get_child(square)
-					var count = 0
-					for l in range(0,len(line_num)):
-						if square_amount_y - ((Square.global_position.y - (0.5*square_size)) / square_size) >= line_num[l]:
-							count += 1
-					Square.global_position.y += (square_size * count)
+				if shape.name != "Platfrom":
+					for square in range(1,shape.get_child_count()):
+						var Square = shape.get_child(square)
+						var count = 0
+						for l in range(0,len(line_num)):
+							if square_amount_y - ((Square.global_position.y - (0.5*square_size)) / square_size) >= line_num[l]:
+								count += 1
+						Square.global_position.y += (square_size * count)
 
 		var nl = len(line_num)
 		if nl == 1:
@@ -104,9 +120,17 @@ func next():
 func _on_retry_pressed():
 	get_tree().paused = false
 	get_tree().reload_current_scene()
+	#$retry.shortcut.shortcut.action = ""
 
 func _on_play_toggled(button_pressed):
 	if dead and button_pressed == false:
 		_on_retry_pressed()
 	else:
 		get_tree().paused = button_pressed
+
+var platform = preload("res://Platfrom.tscn")
+func _on_diff_slider_value_changed(value):
+	difficulty = value
+	if difficulty == 2 and get_node("Platfrom") == null:
+		var new_plat = platform.instance()
+		add_child(new_plat)

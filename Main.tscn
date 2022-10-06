@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Main.gd" type="Script" id=1]
 [ext_resource path="res://images/retry.png" type="Texture" id=2]
 [ext_resource path="res://fonts/square_font.ttf" type="DynamicFontData" id=3]
 [ext_resource path="res://images/pause.png" type="Texture" id=4]
 [ext_resource path="res://images/play.png" type="Texture" id=5]
+[ext_resource path="res://images/difficulty.png" type="Texture" id=7]
 
 [sub_resource type="DynamicFont" id=1]
 size = 100
@@ -53,5 +54,30 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="diff" type="TextureRect" parent="."]
+margin_left = 448.0
+margin_top = -9.0
+margin_right = 928.0
+margin_bottom = 121.0
+rect_scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 7 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="diff_slider" type="HSlider" parent="."]
+margin_left = 456.0
+margin_top = 46.0
+margin_right = 528.0
+margin_bottom = 63.0
+rect_scale = Vector2( 3, 3 )
+focus_mode = 0
+max_value = 2.0
+tick_count = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [connection signal="toggled" from="play" to="." method="_on_play_toggled"]
 [connection signal="pressed" from="retry" to="." method="_on_retry_pressed"]
+[connection signal="value_changed" from="diff_slider" to="." method="_on_diff_slider_value_changed"]
